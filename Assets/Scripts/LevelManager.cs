@@ -32,9 +32,14 @@ public class LevelManager : MonoBehaviour
             limit.SetActive(false);
         }
 
-        currentBallDamage = Ball.instance.ballDamage;
+        
         _currentPlayerHealth = maxPlayerHealth;
         ReadLevelData();
+    }
+
+    private void Start()
+    {
+        currentBallDamage = Ball.instance.ballDamage;
     }
 
     #region Prepare Level
@@ -113,7 +118,9 @@ public class LevelManager : MonoBehaviour
     public void ScoreAddition(int score)
     {
         Debug.Log("Score Addition  : " + score );
+        UiManager.instance.UpdateAdditionalScoreText(score);
         currentPoint += score;
+        UiManager.instance.UpdateAdditionalScoreText(score);
         UiManager.instance.UpdateScoreText(currentPoint);
     }
 
@@ -128,16 +135,20 @@ public class LevelManager : MonoBehaviour
 
     public void BallDestroyed()
     {
-        _currentPlayerHealth--;
-        Ball.instance.hasStarted = false;
-        if (_currentPlayerHealth <= 0)
+        if (Ball.instance.hasStarted)
         {
-            GamePlayManager.instance.NewLevel();
+            Ball.instance.hasStarted = false;
+            _currentPlayerHealth--;
+            if (_currentPlayerHealth <= 0)
+            {
+                GamePlayManager.instance.NewLevel();
+            }
+            else
+            {
+                UiManager.instance.UpdateHealthBars(_currentPlayerHealth);
+            }
         }
-        else
-        {
-            UiManager.instance.UpdateHealthBars(_currentPlayerHealth);
-        }
+        
     }
 
     #endregion

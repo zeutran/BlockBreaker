@@ -26,7 +26,7 @@ public class UiManager : MonoBehaviour
     {
         CancelInvoke(nameof(AdditionalScoreTextReset));
         additionalScoreObject.SetActive(true);
-        additionalScoreText.text = score.ToString();
+        additionalScoreText.text = "+"+score.ToString();
         Invoke(nameof(AdditionalScoreTextReset),.7f);
     }
     private void AdditionalScoreTextReset()

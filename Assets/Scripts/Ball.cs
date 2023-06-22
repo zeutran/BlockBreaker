@@ -59,7 +59,7 @@ public class Ball : MonoBehaviour
         if (collision.gameObject.CompareTag("Breakable"))
             breakEndlessLoops = new Vector2(Random.Range(0f, .3f), Random.Range(0f, .3f));
         else
-            breakEndlessLoops = new Vector2(Random.Range(.4f, 1.4f), Random.Range(.4f, 1.4f));
+            breakEndlessLoops = new Vector2(Random.Range(.4f, 1f), Random.Range(.4f, 1f));
 
         if (hasStarted)
         {

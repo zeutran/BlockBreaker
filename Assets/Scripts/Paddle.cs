@@ -39,7 +39,7 @@ public class Paddle : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ball"))
         {
-            _ballRigidbody2D.velocity = new Vector2(_ballRigidbody2D.velocity.x *-1.9f, _ballRigidbody2D.velocity.y);
+            _ballRigidbody2D.velocity = new Vector2(_ballRigidbody2D.velocity.x *-1.9f, _ballRigidbody2D.velocity.y +2f);
         }
     }
 }
