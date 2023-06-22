@@ -1,44 +1,45 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Paddle : MonoBehaviour {
-
-    public bool autoPlay = false;
-
-    private Ball ball;
+public class Paddle : MonoBehaviour
+{
+    public float speed = 50f; // movement speed
+    public float smoothness = 2f; // smoothness of movement
+    private float _targetDestination;
+    private Rigidbody2D _rigidbody2D;
+    private bool _isBorder = false;
+    private Rigidbody2D _ballRigidbody2D;
+    private void Awake()
+    {
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     void Start()
     {
-        ball = GameObject.FindObjectOfType<Ball>();
+        _targetDestination = _rigidbody2D.position.x;
+        _ballRigidbody2D = Ball.instance.paddleToBallVector;// target destination is the current position of the object
     }
 
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update()
     {
-        if (!autoPlay)
+       
+        float movementAmount = Input.GetAxis("Horizontal") * speed; // get horizontal input
+        _targetDestination += movementAmount * Time.deltaTime; // update target destination
+        Vector3 newLocation =
+            new Vector3(_targetDestination, _rigidbody2D.position.y); // create new location vector
+        _rigidbody2D.position =
+            Vector3.Lerp(_rigidbody2D.position, newLocation,
+                smoothness * Time.deltaTime); // move object to new location with smoothness
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ball"))
         {
-            MoveWithMouse();
+            _ballRigidbody2D.velocity = new Vector2(_ballRigidbody2D.velocity.x *-1.9f, _ballRigidbody2D.velocity.y);
         }
-        else
-        {
-            Autoplay();
-        }
-    }
-
-    void Autoplay()
-    {
-        Vector3 mousePosInBlocks = ball.transform.position;
-        Vector3 paddlePos = new Vector3(1.95f, this.transform.position.y, 0f);
-        paddlePos.x = Mathf.Clamp(mousePosInBlocks.x, 2.19f, 13.8f);
-        transform.position = paddlePos;
-    }
-
-    void MoveWithMouse()
-    {
-        float mousePosInBlocks = (Input.mousePosition.x / Screen.width * 16);
-        Vector3 paddlePos = new Vector3(1.95f, this.transform.position.y, 0f);
-        paddlePos.x = Mathf.Clamp(mousePosInBlocks, 2.19f, 13.8f);
-        transform.position = paddlePos;
     }
 }

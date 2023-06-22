@@ -3,19 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class LoseCollider : MonoBehaviour {
-
-    private LevelManager levelManager;
-
-    private void OnTriggerStay2D(Collider2D trigger)
+    private void OnTriggerStay2D(Collider2D trigger) // Ball is falling down
     {
-        levelManager = GameObject.FindObjectOfType<LevelManager>();
         print("Trigger");
-        levelManager.LoadLevel("Lose");
+        LevelManager.instance.BallDestroyed();
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision) // Ball is contacting with borders
     {
         print("Collision");
-
     }
 }
